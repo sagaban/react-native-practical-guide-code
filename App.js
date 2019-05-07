@@ -7,7 +7,10 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TextInput, Button} from 'react-native';
+import {Platform, StyleSheet, View } from 'react-native';
+
+import PlaceInput from 'rncourse/src/components/PlaceInput/PlaceInput'
+import PlaceList from 'rncourse/src/components/PlaceList/PlaceList';
 
 // const instructions = Platform.select({
 //   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -18,56 +21,27 @@ import {Platform, StyleSheet, Text, View, TextInput, Button} from 'react-native'
 
 type Props = {};
 type State = {
-  placeName: string,
   places: Array<string>,
 }
 export default class App extends Component<Props, State> {
   state = {
-    placeName: '',
     places: []
   }
 
-  // whit this syntax, `this` will refer the class
-  placeNameChangeHandler = (text: string) => {
-    this.setState({placeName: text});
-  }
-
-  placeSubmitHandler = () => {
-    if (this.state.placeName.trim() === '') {
-      return;
-    }
-
+  onPlaceAddedHandler = (placeName: string) => {
     this.setState( prevState => {
       return {
-        places: prevState.places.concat(prevState.placeName),
-        placeName: '',
+        places: prevState.places.concat(placeName),
       }
     })
   }
 
   render() {
-    const placesOutput = this.state.places.map(
-      (place, i) => (
-        <Text key={place+i}>{place}</Text>
-      )
-    )
+
     return (
       <View style={styles.container}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.placeInput}
-            placeholder="Enter a place name"
-            onChangeText={this.placeNameChangeHandler}
-            value={this.state.placeName}
-          />
-          <Button
-            title="  Add  "
-            onPress={this.placeSubmitHandler}
-          />
-        </View>
-        <View>
-          {placesOutput}
-        </View>
+        <PlaceInput onPlaceAdded={this.onPlaceAddedHandler} />
+        <PlaceList places={this.state.places} />
       </View>
     );
   }
@@ -80,19 +54,5 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#FFE4C4',
-  },
-  inputContainer: {
-    // flex: 1,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  placeInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    width: '70%',
   },
 });
