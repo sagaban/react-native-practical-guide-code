@@ -11,10 +11,12 @@ import { StyleSheet, View } from 'react-native';
 
 import PlaceInput from 'rncourse/src/components/PlaceInput/PlaceInput'
 import PlaceList from 'rncourse/src/components/PlaceList/PlaceList';
+import placeImage from 'rncourse/src/assets/beach-couch.jpeg';
 
 type Props = {};
+type Item = {value: string, key: string, image: Object}
 type State = {
-  places: Array<{value: string, key: string}>,
+  places: Array<Item>,
 }
 export default class App extends Component<Props, State> {
   state = {
@@ -26,6 +28,7 @@ export default class App extends Component<Props, State> {
       return {
         places: prevState.places.concat({
           value: placeName,
+          image: placeImage,
           key: `${Math.random()}`, // not ideal, can be repeated
         }),
       }

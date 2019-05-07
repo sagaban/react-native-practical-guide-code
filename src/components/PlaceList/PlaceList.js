@@ -7,8 +7,10 @@ import { StyleSheet, FlatList } from 'react-native';
 
 import ListItem from 'rncourse/src/components/ListItem/ListItem';
 
+type Item = {value: string, key: string, image: Object}
+
 type Props = {
-  places: Array<{value: string, key: string}>,
+  places: Array<Item>,
   onItemDeleted: Function,
 };
 
@@ -21,6 +23,7 @@ const placeList = (props: Props) => {
       renderItem={(info) => (
         <ListItem
           placeName={info.item.value}
+          placeImage={info.item.image}
           onItemPress={() => props.onItemDeleted(info.item.key)}/>
       )}
     />
