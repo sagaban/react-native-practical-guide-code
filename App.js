@@ -11,7 +11,6 @@ import { StyleSheet, View } from 'react-native';
 
 import PlaceInput from 'rncourse/src/components/PlaceInput/PlaceInput'
 import PlaceList from 'rncourse/src/components/PlaceList/PlaceList';
-import placeImage from 'rncourse/src/assets/beach-couch.jpeg';
 
 type Props = {};
 type Item = {value: string, key: string, image: Object}
@@ -28,7 +27,9 @@ export default class App extends Component<Props, State> {
       return {
         places: prevState.places.concat({
           value: placeName,
-          image: placeImage,
+          image: {
+            uri: `https://picsum.photos/id/${Math.floor(Math.random()*900+100)}/300/200`
+          },
           key: `${Math.random()}`, // not ideal, can be repeated
         }),
       }
