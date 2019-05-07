@@ -3,7 +3,7 @@
  * @flow
  */
 import React from 'react';
-import { StyleSheet, View} from 'react-native';
+import { StyleSheet, ScrollView} from 'react-native';
 
 import ListItem from 'rncourse/src/components/ListItem/ListItem';
 
@@ -20,9 +20,9 @@ const placeList = (props: Props) => {
     );
 
   return (
-    <View style={styles.listContainer}>
+    <ScrollView style={styles.listContainer}>
       {placesOutput}
-    </View>
+    </ScrollView>
   );
 }
 
