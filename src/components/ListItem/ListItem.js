@@ -3,16 +3,19 @@
  * @flow
  */
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 type Props = {
-  placeName: string
+  placeName: string,
+  onItemPress: Function,
 }
 
 const listItem = (props : Props) => (
-  <View style={styles.listItem}>
-    <Text>{props.placeName}</Text>
-  </View>
+  <TouchableOpacity onPress={props.onItemPress}>
+    <View style={styles.listItem}>
+      <Text>{props.placeName}</Text>
+    </View>
+  </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
@@ -20,7 +23,7 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 10,
     backgroundColor: '#eee',
-    margin: 5
+    marginBottom: 5
   }
 })
 

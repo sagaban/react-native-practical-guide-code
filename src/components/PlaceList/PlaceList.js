@@ -14,7 +14,7 @@ type Props = {
 const placeList = (props: Props) => {
   const placesOutput = props.places.map(
       (place, i) => (
-        <ListItem key={place+i} placeName={place} />
+        <ListItem key={place+i} placeName={place} onItemPress={() => alert( 'item presed ' + i)}/>
       )
     );
 
