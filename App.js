@@ -14,7 +14,7 @@ import PlaceList from 'rncourse/src/components/PlaceList/PlaceList';
 
 type Props = {};
 type State = {
-  places: Array<string>,
+  places: Array<{value: string, key: string}>,
 }
 export default class App extends Component<Props, State> {
   state = {
@@ -24,14 +24,17 @@ export default class App extends Component<Props, State> {
   onPlaceAddedHandler = (placeName: string) => {
     this.setState( prevState => {
       return {
-        places: prevState.places.concat(placeName),
+        places: prevState.places.concat({
+          value: placeName,
+          key: `${Math.random()}`, // not ideal, can be repeated
+        }),
       }
     })
   }
 
-  onItemDeletedHandler = (index: number) => {
+  onItemDeletedHandler = (key: number) => {
     this.setState ( prevState => ({
-      places: prevState.places.filter((p, i) => i !== index),
+      places: prevState.places.filter(p => p.key !== key),
     }));
   }
 

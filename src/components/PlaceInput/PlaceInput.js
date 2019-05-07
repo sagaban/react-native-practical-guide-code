@@ -4,6 +4,7 @@
  */
 import React, {Component} from 'react';
 import { View, Button, TextInput, StyleSheet } from 'react-native';
+const randomCountry = [ "Albania", "Georgia", "Serbia", "Papua New Guinea", "Macau SAR China", "Kiribati", "Honduras", "Swaziland", "Martinique", "Nigeria", "Bolivia", "Anguilla", "Uzbekistan", "Mayotte", "Bosnia & Herzegovina", "Cape Verde", "Guernsey"];
 
 type Props = {
   onPlaceAdded: Function
@@ -21,12 +22,16 @@ export default class placeInput extends Component<Props, State> {
   }
 
   placeSubmitHandler = () => {
-    if (this.state.placeName.trim() === '') {
+    if (!this.state.placeName || this.state.placeName.trim() === '') {
       return;
     }
 
     this.props.onPlaceAdded(this.state.placeName);
     this.setState({placeName: ''});
+  }
+
+  addRandomCountry = () => {
+    this.props.onPlaceAdded(randomCountry[Math.floor(Math.random()*randomCountry.length)]);
   }
 
   render() {
@@ -39,7 +44,11 @@ export default class placeInput extends Component<Props, State> {
           value={this.state.placeName}
         />
         <Button
-          title="  Add  "
+          title="Rnd"
+          onPress={this.addRandomCountry}
+        />
+        <Button
+          title="Add"
           onPress={this.placeSubmitHandler}
         />
       </View>

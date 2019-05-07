@@ -3,26 +3,27 @@
  * @flow
  */
 import React from 'react';
-import { StyleSheet, ScrollView} from 'react-native';
+import { StyleSheet, FlatList } from 'react-native';
 
 import ListItem from 'rncourse/src/components/ListItem/ListItem';
 
 type Props = {
-  places: Array<string>,
+  places: Array<{value: string, key: string}>,
   onItemDeleted: Function,
 };
 
 const placeList = (props: Props) => {
-  const placesOutput = props.places.map(
-      (place, i) => (
-        <ListItem key={place+i} placeName={place} onItemPress={() => props.onItemDeleted(i)}/>
-      )
-    );
 
   return (
-    <ScrollView style={styles.listContainer}>
-      {placesOutput}
-    </ScrollView>
+    <FlatList
+      style={styles.listContainer}
+      data={props.places}
+      renderItem={(info) => (
+        <ListItem
+          placeName={info.item.value}
+          onItemPress={() => props.onItemDeleted(info.item.key)}/>
+      )}
+    />
   );
 }
 
