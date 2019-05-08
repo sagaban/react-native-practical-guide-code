@@ -11,7 +11,7 @@ type Item = {value: string, key: string, image: Object}
 
 type Props = {
   places: Array<Item>,
-  onItemDeleted: Function,
+  onItemSelected: Function,
 };
 
 const placeList = (props: Props) => {
@@ -24,7 +24,7 @@ const placeList = (props: Props) => {
         <ListItem
           placeName={info.item.value}
           placeImage={info.item.image}
-          onItemPress={() => props.onItemDeleted(info.item.key)}/>
+          onItemPress={() => props.onItemSelected(info.item.key)}/>
       )}
     />
   );

@@ -11,15 +11,18 @@ import { StyleSheet, View } from 'react-native';
 
 import PlaceInput from 'rncourse/src/components/PlaceInput/PlaceInput'
 import PlaceList from 'rncourse/src/components/PlaceList/PlaceList';
+import PlaceDetails from 'rncourse/src/components/PlaceDetails/PlaceDetails';
 
 type Props = {};
 type Item = {value: string, key: string, image: Object}
 type State = {
   places: Array<Item>,
+  selectedPlace: ?Object
 }
 export default class App extends Component<Props, State> {
   state = {
-    places: []
+    places: [],
+    selectedPlace: null
   }
 
   onPlaceAddedHandler = (placeName: string) => {
@@ -36,9 +39,24 @@ export default class App extends Component<Props, State> {
     })
   }
 
-  onItemDeletedHandler = (key: number) => {
+  onItemDeleteHandler = () => {
+
+    this.setState( prevState => {
+    const key = prevState.selectedPlace ? prevState.selectedPlace.key : null;
+      return ({
+        places: prevState.places.filter(p => p.key !== key),
+        selectedPlace: null,
+      });
+    });
+  }
+
+  onModalCloseHandler = () => {
+    this.setState({selectedPlace: null})
+  }
+
+  onItemSelectedHandler = (key: number) => {
     this.setState ( prevState => ({
-      places: prevState.places.filter(p => p.key !== key),
+      selectedPlace: prevState.places.find(p => p.key === key),
     }));
   }
 
@@ -46,8 +64,13 @@ export default class App extends Component<Props, State> {
 
     return (
       <View style={styles.container}>
+        <PlaceDetails
+          selectedPlace={this.state.selectedPlace}
+          onModalClose={this.onModalCloseHandler}
+          onItemDelete={this.onItemDeleteHandler}
+        />
         <PlaceInput onPlaceAdded={this.onPlaceAddedHandler} />
-        <PlaceList places={this.state.places} onItemDeleted={this.onItemDeletedHandler} />
+        <PlaceList places={this.state.places} onItemSelected={this.onItemSelectedHandler} />
       </View>
     );
   }
