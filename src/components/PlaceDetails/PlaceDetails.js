@@ -3,7 +3,8 @@
  * @flow
  */
 import React from 'react';
-import { Modal, View, Image, Text, Button, StyleSheet } from 'react-native';
+import { Modal, View, Image, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import type { Item } from '@/types/store';
 
@@ -26,10 +27,11 @@ const placeDetails = (props : Props) => {
       <View style={styles.modalContainer}>
         {modalContent}
         <View>
-          <Button
-            title="Delete"
-            color="red"
-            onPress={props.onItemDelete} />
+          <TouchableOpacity onPress={props.onItemDelete}>
+            <View style={styles.deleteButton}>
+              <Icon size={30} name="ios-trash" color="red"/>
+            </View>
+          </TouchableOpacity>
           <Button title="Close" onPress={props.onModalClose}/>
         </View>
       </View>
@@ -49,7 +51,10 @@ const styles = StyleSheet.create({
   placeImage: {
     width: '100%',
     height: 200,
-  }
+  },
+  deleteButton: {
+    alignItems: 'center'
+  },
 })
 
 export default placeDetails;
