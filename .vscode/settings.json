@@ -3,5 +3,8 @@
     "@": "${workspaceRoot}/src",
     "components": "${workspaceRoot}/src/components",
     "types": "${workspaceRoot}/src/types",
-  }
+  },
+  "cSpell.words": [
+    "Ionicons"
+  ]
 }
