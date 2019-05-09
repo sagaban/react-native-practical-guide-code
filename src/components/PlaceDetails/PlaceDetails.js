@@ -5,8 +5,10 @@
 import React from 'react';
 import { Modal, View, Image, Text, Button, StyleSheet } from 'react-native';
 
+import type { Item } from '@/types/store';
+
 type Props = {
-  selectedPlace: Object | null,
+  selectedPlace: ?Item,
   onModalClose: Function,
   onItemDelete: Function,
 };
