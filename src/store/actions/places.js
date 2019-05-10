@@ -13,8 +13,9 @@ export const addPlace = (placeName: string): Action => {
   };
 };
 
-export const deletePlace = (): Action => {
+export const deletePlace = (key: string): Action => {
   return {
     type: DELETE_PLACE,
+    placeKey: key,
   };
 };
