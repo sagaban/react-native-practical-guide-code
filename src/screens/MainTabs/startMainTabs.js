@@ -14,6 +14,7 @@ const startTab = () => {
             children: [
               {
                 stack: {
+                  id: 'findPlacesStack',
                   children: [
                     {
                       component: {

@@ -4,34 +4,17 @@
  */
 import type { Action } from '@/types/store';
 
-import {
-  ADD_PLACE,
-  DELETE_PLACE,
-  SELECT_PLACE,
-  DESELECT_PLACE,
-} from '@/store/actions/actionTypes'
+import { ADD_PLACE, DELETE_PLACE } from '@/store/actions/actionTypes';
 
-export const addPlace = (placeName : string) : Action => {
+export const addPlace = (placeName: string): Action => {
   return {
     type: ADD_PLACE,
-    placeName
-  }
-}
-
-export const deletePlace = () : Action => {
-  return {
-    type: DELETE_PLACE
-  }
+    placeName,
+  };
 };
 
-export const selectPlace = (key : string) : Action => {
+export const deletePlace = (): Action => {
   return {
-    type: SELECT_PLACE,
-    placeKey: key
-  }
-}
-export const deselectPlace = () : Action => {
-  return {
-    type: DESELECT_PLACE,
-  }
-}
+    type: DELETE_PLACE,
+  };
+};

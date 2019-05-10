@@ -2,24 +2,42 @@
  * @format
  * @flow
  */
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { View, Button, TextInput, StyleSheet } from 'react-native';
-const randomCountry = [ "Albania", "Georgia", "Serbia", "Papua New Guinea", "Macau SAR China", "Kiribati", "Honduras", "Swaziland", "Martinique", "Nigeria", "Bolivia", "Anguilla", "Uzbekistan", "Mayotte", "Bosnia & Herzegovina", "Cape Verde", "Guernsey"];
+const randomCountry = [
+  'Albania',
+  'Georgia',
+  'Serbia',
+  'Papua New Guinea',
+  'Macau SAR China',
+  'Kiribati',
+  'Honduras',
+  'Swaziland',
+  'Martinique',
+  'Nigeria',
+  'Bolivia',
+  'Anguilla',
+  'Uzbekistan',
+  'Mayotte',
+  'Bosnia & Herzegovina',
+  'Cape Verde',
+  'Guernsey',
+];
 
 type Props = {
-  onPlaceAdded: Function
+  onPlaceAdded: Function,
 };
 type State = {
   placeName: string,
-}
+};
 export default class placeInput extends Component<Props, State> {
   state = {
-    placeName: ''
-  }
+    placeName: '',
+  };
 
   placeNameChangeHandler = (text: string) => {
-    this.setState({placeName: text});
-  }
+    this.setState({ placeName: text });
+  };
 
   placeSubmitHandler = () => {
     if (!this.state.placeName || this.state.placeName.trim() === '') {
@@ -27,12 +45,12 @@ export default class placeInput extends Component<Props, State> {
     }
 
     this.props.onPlaceAdded(this.state.placeName);
-    this.setState({placeName: ''});
-  }
+    this.setState({ placeName: '' });
+  };
 
   addRandomCountry = () => {
-    this.props.onPlaceAdded(randomCountry[Math.floor(Math.random()*randomCountry.length)]);
-  }
+    this.props.onPlaceAdded(randomCountry[Math.floor(Math.random() * randomCountry.length)]);
+  };
 
   render() {
     return (
@@ -43,16 +61,10 @@ export default class placeInput extends Component<Props, State> {
           onChangeText={this.placeNameChangeHandler}
           value={this.state.placeName}
         />
-        <Button
-          title="Rnd"
-          onPress={this.addRandomCountry}
-        />
-        <Button
-          title="Add"
-          onPress={this.placeSubmitHandler}
-        />
+        <Button title="Rnd" onPress={this.addRandomCountry} />
+        <Button title="Add" onPress={this.placeSubmitHandler} />
       </View>
-    )
+    );
   }
 }
 
@@ -71,7 +83,6 @@ const styles = StyleSheet.create({
     width: '70%',
   },
   listContainer: {
-    width: '100%'
-  }
+    width: '100%',
+  },
 });
-

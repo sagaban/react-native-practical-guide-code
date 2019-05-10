@@ -15,6 +15,12 @@ $ yarn run android
 
 For more informations about your device + operating system dependencies, take a look at the [official Getting Started](https://facebook.github.io/react-native/docs/getting-started.html) page, **React Native CLI Quickstart** tab.
 
+## Debugging
+
+To debug the React Native app, install [React Native Debugger](https://github.com/jhen0409/react-native-debugger) and enable *Debug JS Remotely* from the app. Remember to close the browser tab that will be opened.
+
+To debug the Android app itself, just run `react-native log-android` from the terminal
+
 ## Resources
 
 * [React Native Debugger](https://github.com/jhen0409/react-native-debugger)
