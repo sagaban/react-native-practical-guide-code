@@ -10,6 +10,7 @@ import AuthScreen from '@/screens/Auth/Auth';
 import SharePlaceScreen from '@/screens/SharePlace/SharePlace';
 import FindPlaceScreen from '@/screens/FindPlace/FindPlace';
 import PlaceDetailsScreen from '@/screens/PlaceDetails/PlaceDetails';
+import SideDrawerScreen from '@/screens/SideDrawer/SideDrawer';
 
 import configureStore from '@/store/configureStore';
 
@@ -42,6 +43,7 @@ registerComponent('awesome-places.AuthScreen', AuthScreen);
 registerComponent('awesome-places.SharePlaceScreen', SharePlaceScreen);
 registerComponent('awesome-places.FindPlaceScreen', FindPlaceScreen);
 registerComponent('awesome-places.PlaceDetailsScreen', PlaceDetailsScreen);
+registerComponent('awesome-places.SideDrawerScreen', SideDrawerScreen);
 
 // Start a App
 Navigation.setRoot({
@@ -64,3 +66,9 @@ Navigation.setRoot({
     },
   },
 });
+
+// Navigation.setDefaultOptions({
+//   topBar: {
+//     visible: true
+//   }
+// });

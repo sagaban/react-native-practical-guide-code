@@ -19,6 +19,41 @@ type Props = {
 };
 
 class PlaceDetails extends Component<Props> {
+  // TODO: move all the `navigationButtonPressed` logic to a mixing
+  // It is repeated in PlaceDetails, SharePlace and FindPlace
+  navigationEventListener: null;
+
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  componentWillUnmount() {
+    // Not mandatory
+    if (this.navigationEventListener) {
+      this.navigationEventListener.remove();
+    }
+  }
+
+  navigationButtonPressed({ buttonId }) {
+    console.log(`buttonId: ${buttonId}`);
+    if (buttonId === 'sideMenuToggle') {
+      Navigation.mergeOptions('sideMenu', {
+        sideMenu: {
+          left: {
+            visible: true,
+          },
+        },
+      });
+      Navigation.mergeOptions('leftSideMenu', {
+        sideMenu: {
+          left: {
+            visible: true,
+          },
+        },
+      });
+    }
+  }
+
   placeDeletedHandler = () => {
     this.props.onDeletePlace(this.props.selectedPlace.key);
     Navigation.pop('findPlacesStack');
@@ -26,7 +61,7 @@ class PlaceDetails extends Component<Props> {
 
   closeModalHandler = () => {
     Navigation.pop('findPlacesStack');
-  }
+  };
 
   render() {
     return (
