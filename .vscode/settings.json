@@ -5,6 +5,7 @@
     "types": "${workspaceRoot}/src/types",
   },
   "cSpell.words": [
-    "Ionicons"
+    "Ionicons",
+    "Unmount"
   ]
 }

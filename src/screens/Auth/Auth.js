@@ -3,7 +3,7 @@
  * @flow
  */
 import React, { Component } from 'react';
-import { View, Button, StyleSheet, ImageBackground } from 'react-native';
+import { View, StyleSheet, ImageBackground } from 'react-native';
 
 import startMainTabs from '@/screens/MainTabs/startMainTabs';
 import DefaultInput from '@/components/UI/DefaultInput/DefaultInput';
