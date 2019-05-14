@@ -35,19 +35,9 @@ class SharePlaceScreen extends Component<Props, State> {
     };
   }
 
-  // TODO: move all the `navigationButtonPressed` logic to a mixing
-  // It is repeated in PlaceDetails, SharePlace and FindPlace
-  navigationEventListener: null;
-
-  componentDidMount() {
-    this.navigationEventListener = Navigation.events().bindComponent(this);
-  }
-
-  componentWillUnmount() {
-    // Not mandatory
-    if (this.navigationEventListener) {
-      this.navigationEventListener.remove();
-    }
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
   }
 
   navigationButtonPressed({ buttonId }) {
