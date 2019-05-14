@@ -13,7 +13,7 @@ const defaultInput = (props: Object) => {
 
 const styles = StyleSheet.create({
   input: {
-    width: '100%',
+    // width: '100%',
     borderWidth: 1,
     borderColor: '#eee',
     padding: 5,

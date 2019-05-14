@@ -3,7 +3,7 @@
  * @flow
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, ImageBackground } from 'react-native';
+import { View, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 
 import startMainTabs from '@/screens/MainTabs/startMainTabs';
 import DefaultInput from '@/components/UI/DefaultInput/DefaultInput';
@@ -23,19 +23,30 @@ class AuthScreen extends Component<Props> {
   };
 
   render() {
+    let headingText = null;
+    if (Dimensions.get('window').height > 500) {
+      headingText = (
+        <MainText>
+          <HeadingText> Please Log in </HeadingText>
+        </MainText>
+      );
+    }
     return (
       <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
         <View style={styles.container}>
-          <MainText>
-            <HeadingText> Please Log in </HeadingText>
-          </MainText>
+          {headingText}
           <ButtonWithBackground onPress={this.goToLogin} color="#29aaf4">
             Switch to Login
           </ButtonWithBackground>
           <View style={styles.inputContainer}>
             <DefaultInput placeholder="Your e-mail address" style={styles.input} />
-            <DefaultInput placeholder="Password" style={styles.input} />
-            <DefaultInput placeholder="Confirm Password" style={styles.input} />
+            <View style={styles.passwordContainer}>
+              <DefaultInput placeholder="Password" style={[styles.input, styles.passwordInput]} />
+              <DefaultInput
+                placeholder="Confirm Password"
+                style={[styles.input, styles.passwordInput]}
+              />
+            </View>
           </View>
           <ButtonWithBackground onPress={this.loginHandler} color="#29aaf4">
             Submit
@@ -58,10 +69,22 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '80%',
+    // borderColor: 'blue',
+    // borderWidth: 1,
   },
   input: {
     backgroundColor: '#eee',
     borderColor: '#bbb',
+  },
+  passwordContainer: {
+    flexDirection: Dimensions.get('window').height > 500 ? 'column' : 'row',
+    justifyContent: 'space-between',
+    // width: '100%',
+    // borderColor: 'red',
+    // borderWidth: 1,
+  },
+  passwordInput: {
+    width: Dimensions.get('window').height > 500 ? 'auto' : '45%',
   },
 });
 
