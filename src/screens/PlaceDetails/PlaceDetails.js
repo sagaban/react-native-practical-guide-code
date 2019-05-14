@@ -3,7 +3,16 @@
  * @flow
  */
 import React, { Component } from 'react';
-import { View, Image, Text, Button, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  Dimensions,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -17,8 +26,25 @@ type Props = {
   onModalClose: Function,
   onDeletePlace: Function,
 };
+type State = {
+  isPortrait: boolean,
+};
 
-class PlaceDetails extends Component<Props> {
+class PlaceDetails extends Component<Props, State> {
+  state = {
+    isPortrait: true,
+  };
+
+  constructor(props: Props) {
+    super(props);
+    Dimensions.addEventListener('change', this.updateStyles);
+  }
+
+  updateStyles = (dims: Object) => {
+    this.setState({
+      isPortrait: dims.window.height > 500,
+    });
+  };
   // TODO: move all the `navigationButtonPressed` logic to a mixing
   // It is repeated in PlaceDetails, SharePlace and FindPlace
   navigationEventListener: null;
@@ -32,6 +58,7 @@ class PlaceDetails extends Component<Props> {
     if (this.navigationEventListener) {
       this.navigationEventListener.remove();
     }
+    Dimensions.removeEventListener('change', this.updateStyles);
   }
 
   navigationButtonPressed({ buttonId }) {
@@ -65,22 +92,30 @@ class PlaceDetails extends Component<Props> {
 
   render() {
     return (
-      <View style={styles.modalContainer}>
-        <View>
+      <View
+        style={[
+          styles.container,
+          this.state.isPortrait ? styles.portraitContainer : styles.landscapeContainer,
+        ]}>
+        <View style={styles.subContainer}>
           <Image source={this.props.selectedPlace.image} style={styles.placeImage} />
-          <Text style={styles.placeName}>{this.props.selectedPlace.value}</Text>
         </View>
-        <View>
-          <TouchableOpacity onPress={this.placeDeletedHandler}>
-            <View style={styles.deleteButton}>
-              <Icon
-                size={30}
-                name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
-                color="red"
-              />
-            </View>
-          </TouchableOpacity>
-          <Button title="Close" onPress={this.closeModalHandler} />
+        <View style={styles.subContainer}>
+          <View>
+            <Text style={styles.placeName}>{this.props.selectedPlace.value}</Text>
+          </View>
+          <View>
+            <TouchableOpacity onPress={this.placeDeletedHandler}>
+              <View style={styles.deleteButton}>
+                <Icon
+                  size={30}
+                  name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
+                  color="red"
+                />
+              </View>
+            </TouchableOpacity>
+            <Button title="Close" onPress={this.closeModalHandler} />
+          </View>
         </View>
       </View>
     );
@@ -88,8 +123,18 @@ class PlaceDetails extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  modalContainer: {
+  container: {
     margin: 22,
+    flex: 1,
+  },
+  portraitContainer: {
+    flexDirection: 'column',
+  },
+  landscapeContainer: {
+    flexDirection: 'row',
+  },
+  subContainer: {
+    flex: 1,
   },
   placeName: {
     fontWeight: 'bold',
