@@ -27,6 +27,14 @@ class SharePlaceScreen extends Component<Props, State> {
     placeName: '',
   };
 
+  static options(passProps) {
+    return {
+      topBar: {
+        leftButtonColor: 'blue',
+      },
+    };
+  }
+
   // TODO: move all the `navigationButtonPressed` logic to a mixing
   // It is repeated in PlaceDetails, SharePlace and FindPlace
   navigationEventListener: null;

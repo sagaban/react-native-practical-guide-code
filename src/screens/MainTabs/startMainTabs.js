@@ -39,6 +39,7 @@ const startTab = () => {
                       bottomTab: {
                         text: 'Find Place',
                         icon: mapIcon,
+                        selectedIconColor: 'orange',
                       },
                       topBar: {
                         title: {
@@ -69,6 +70,7 @@ const startTab = () => {
                       bottomTab: {
                         text: 'Share Place',
                         icon: shareIcon,
+                        selectedIconColor: 'orange',
                       },
                       topBar: {
                         title: {

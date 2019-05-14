@@ -15,6 +15,13 @@ type Props = {
 };
 
 class FindPlaceScreen extends Component<Props> {
+  static options(passProps) {
+    return {
+      topBar: {
+        leftButtonColor: 'red',
+      },
+    };
+  }
   // TODO: move all the `navigationButtonPressed` logic to a mixing
   // It is repeated in PlaceDetails, SharePlace and FindPlace
   navigationEventListener: null;
