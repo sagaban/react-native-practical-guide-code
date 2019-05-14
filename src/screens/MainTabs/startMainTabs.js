@@ -3,13 +3,15 @@
  * @flow
  */
 import { Navigation } from 'react-native-navigation';
+import { Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const startTab = () => {
+  const isAndroid = Platform.OS === 'android';
   Promise.all([
-    Icon.getImageSource('md-map', 30),
-    Icon.getImageSource('md-share-alt', 30),
-    Icon.getImageSource('ios-menu', 30),
+    Icon.getImageSource(isAndroid ? 'md-map' : 'ios-map', 30),
+    Icon.getImageSource(isAndroid ? 'md-share-alt' : 'ios-share', 30),
+    Icon.getImageSource(isAndroid ? 'md-menu' : 'ios-menu', 30),
   ]).then(([mapIcon, shareIcon, menuIcon]) => {
     Navigation.setRoot({
       root: {
