@@ -23,12 +23,19 @@ class AuthScreen extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    Dimensions.addEventListener('change', dims => {
-      this.setState({
-        isPortrait: dims.window.height > 500,
-      });
-    });
+    Dimensions.addEventListener('change', this.updateStyles);
   }
+
+  componentWillUnmount() {
+    Dimensions.removeEventListener('change', this.updateStyles);
+  }
+
+  updateStyles = (dims: Object) => {
+    this.setState({
+      isPortrait: dims.window.height > 500,
+    });
+  };
+
   goToLogin = () => {
     alert('hello');
   };
