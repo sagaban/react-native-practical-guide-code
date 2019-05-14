@@ -14,28 +14,18 @@ import backgroundImage from '@/assets/background.jpg';
 
 type Props = {};
 type State = {
-  respStyles: {
-    pwContainerDirection: 'column' | 'row',
-    pwInputWidth: 'auto' | '45%',
-  },
+  isPortrait: boolean,
 };
 class AuthScreen extends Component<Props, State> {
   state = {
-    respStyles: {
-      pwContainerDirection: 'column',
-      pwInputWidth: 'auto',
-    },
+    isPortrait: true,
   };
 
   constructor(props: Props) {
     super(props);
     Dimensions.addEventListener('change', dims => {
-      const isHeightEnough = dims.window.height > 500;
       this.setState({
-        respStyles: {
-          pwContainerDirection: isHeightEnough ? 'column' : 'row',
-          pwInputWidth: isHeightEnough ? 'auto' : '45%',
-        },
+        isPortrait: dims.window.height > 500,
       });
     });
   }
@@ -49,7 +39,7 @@ class AuthScreen extends Component<Props, State> {
 
   render() {
     let headingText = null;
-    if (Dimensions.get('window').height > 500) {
+    if (this.state.isPortrait) {
       headingText = (
         <MainText>
           <HeadingText> Please Log in </HeadingText>
@@ -66,17 +56,28 @@ class AuthScreen extends Component<Props, State> {
           <View style={styles.inputContainer}>
             <DefaultInput placeholder="Your e-mail address" style={styles.input} />
             <View
-              style={[
-                styles.passwordContainer,
-                { flexDirection: this.state.respStyles.pwContainerDirection },
-              ]}>
+              style={
+                this.state.isPortrait
+                  ? styles.portraitPasswordContainer
+                  : styles.landscapePasswordContainer
+              }>
               <DefaultInput
                 placeholder="Password"
-                style={[styles.input, { width: this.state.respStyles.pwInputWidth }]}
+                style={[
+                  styles.input,
+                  this.state.isPortrait
+                    ? styles.portraitPasswordInput
+                    : styles.landscapePasswordInput,
+                ]}
               />
               <DefaultInput
                 placeholder="Confirm Password"
-                style={[styles.input, { width: this.state.respStyles.pwInputWidth }]}
+                style={[
+                  styles.input,
+                  this.state.isPortrait
+                    ? styles.portraitPasswordInput
+                    : styles.landscapePasswordInput,
+                ]}
               />
             </View>
           </View>
@@ -101,23 +102,25 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '80%',
-    // borderColor: 'blue',
-    // borderWidth: 1,
   },
   input: {
     backgroundColor: '#eee',
     borderColor: '#bbb',
   },
-  passwordContainer: {
-    // flexDirection: Dimensions.get('window').height > 500 ? 'column' : 'row',
+  landscapePasswordContainer: {
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    // width: '100%',
-    // borderColor: 'red',
-    // borderWidth: 1,
   },
-  // passwordInput: {
-  //   width: Dimensions.get('window').height > 500 ? 'auto' : '45%',
-  // },
+  portraitPasswordContainer: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+  landscapePasswordInput: {
+    width: '45%',
+  },
+  portraitPasswordInput: {
+    width: 'auto',
+  },
 });
 
 export default AuthScreen;
