@@ -13,7 +13,32 @@ import ButtonWithBackground from '@/components/UI/ButtonWithBackground/ButtonWit
 import backgroundImage from '@/assets/background.jpg';
 
 type Props = {};
-class AuthScreen extends Component<Props> {
+type State = {
+  respStyles: {
+    pwContainerDirection: 'column' | 'row',
+    pwInputWidth: 'auto' | '45%',
+  },
+};
+class AuthScreen extends Component<Props, State> {
+  state = {
+    respStyles: {
+      pwContainerDirection: 'column',
+      pwInputWidth: 'auto',
+    },
+  };
+
+  constructor(props: Props) {
+    super(props);
+    Dimensions.addEventListener('change', dims => {
+      const isHeightEnough = dims.window.height > 500;
+      this.setState({
+        respStyles: {
+          pwContainerDirection: isHeightEnough ? 'column' : 'row',
+          pwInputWidth: isHeightEnough ? 'auto' : '45%',
+        },
+      });
+    });
+  }
   goToLogin = () => {
     alert('hello');
   };
@@ -40,11 +65,18 @@ class AuthScreen extends Component<Props> {
           </ButtonWithBackground>
           <View style={styles.inputContainer}>
             <DefaultInput placeholder="Your e-mail address" style={styles.input} />
-            <View style={styles.passwordContainer}>
-              <DefaultInput placeholder="Password" style={[styles.input, styles.passwordInput]} />
+            <View
+              style={[
+                styles.passwordContainer,
+                { flexDirection: this.state.respStyles.pwContainerDirection },
+              ]}>
+              <DefaultInput
+                placeholder="Password"
+                style={[styles.input, { width: this.state.respStyles.pwInputWidth }]}
+              />
               <DefaultInput
                 placeholder="Confirm Password"
-                style={[styles.input, styles.passwordInput]}
+                style={[styles.input, { width: this.state.respStyles.pwInputWidth }]}
               />
             </View>
           </View>
@@ -77,15 +109,15 @@ const styles = StyleSheet.create({
     borderColor: '#bbb',
   },
   passwordContainer: {
-    flexDirection: Dimensions.get('window').height > 500 ? 'column' : 'row',
+    // flexDirection: Dimensions.get('window').height > 500 ? 'column' : 'row',
     justifyContent: 'space-between',
     // width: '100%',
     // borderColor: 'red',
     // borderWidth: 1,
   },
-  passwordInput: {
-    width: Dimensions.get('window').height > 500 ? 'auto' : '45%',
-  },
+  // passwordInput: {
+  //   width: Dimensions.get('window').height > 500 ? 'auto' : '45%',
+  // },
 });
 
 export default AuthScreen;
