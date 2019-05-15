@@ -5,10 +5,19 @@
 import React from 'react';
 import { TextInput, StyleSheet } from 'react-native';
 
-const defaultInput = (props: Object) => {
+type Props = { isValid: ?boolean, isTouched: ?boolean } & Object;
+const defaultInput = (props: Props) => {
   return (
-    <TextInput underlineColorAndroid="transparent" {...props} style={[styles.input, props.style]} />
+    <TextInput
+      underlineColorAndroid="transparent"
+      {...props}
+      style={[styles.input, props.style, !props.isValid && props.isTouched ? styles.invalid : null]}
+    />
   );
+};
+
+defaultInput.defaultProps = {
+  isValid: true,
 };
 
 const styles = StyleSheet.create({
@@ -19,6 +28,10 @@ const styles = StyleSheet.create({
     padding: 5,
     marginTop: 8,
     marginBottom: 8,
+  },
+  invalid: {
+    backgroundColor: '#f9c0c0',
+    borderColor: 'red',
   },
 });
 

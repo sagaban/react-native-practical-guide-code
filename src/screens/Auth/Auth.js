@@ -12,13 +12,42 @@ import MainText from '@/components/UI/MainText/MainText';
 import ButtonWithBackground from '@/components/UI/ButtonWithBackground/ButtonWithBackground';
 import backgroundImage from '@/assets/background.jpg';
 
+import validate from '@/utility/validation';
+
 type Props = {};
 type State = {
   isPortrait: boolean,
+  controls: Object,
 };
 class AuthScreen extends Component<Props, State> {
   state = {
     isPortrait: true,
+    controls: {
+      email: {
+        value: '',
+        isTouched: false,
+        isValid: false,
+        validationRules: {
+          isEmail: true,
+        },
+      },
+      password: {
+        value: '',
+        isTouched: false,
+        isValid: false,
+        validationRules: {
+          minLength: 6,
+        },
+      },
+      confirmPassword: {
+        value: '',
+        isTouched: false,
+        isValid: false,
+        validationRules: {
+          equalTo: 'password',
+        },
+      },
+    },
   };
 
   constructor(props: Props) {
@@ -44,6 +73,51 @@ class AuthScreen extends Component<Props, State> {
     startMainTabs();
   };
 
+  areAllInputValid = () => {
+    const { controls } = this.state;
+    return Object.keys(controls).reduce((acc, input) => {
+      return acc && controls[input].isValid;
+    }, true);
+  };
+
+  updateInputState = (key: string, value: string) => {
+    const extraValues = {};
+    const equalToKeyValue = this.state.controls[key].validationRules.equalTo;
+    if (equalToKeyValue !== undefined) {
+      extraValues[equalToKeyValue] = this.state.controls[equalToKeyValue].value;
+    }
+
+    // If we change password, should update confirmPassword
+    const crossedControlValidation = {};
+    if (key === 'password') {
+      crossedControlValidation.confirmPassword = {
+        ...this.state.controls.confirmPassword,
+        isValid:
+          key === 'password'
+            ? validate(
+                this.state.controls.confirmPassword.value,
+                this.state.controls.confirmPassword.validationRules,
+                { [key]: value }
+              )
+            : this.state.controls.confirmPassword.isValid,
+      };
+    }
+    this.setState((prevState: State) => {
+      return {
+        controls: {
+          ...prevState.controls,
+          [key]: {
+            ...prevState.controls[key],
+            value,
+            isValid: validate(value, prevState.controls[key].validationRules, extraValues),
+            isTouched: true,
+          },
+          ...crossedControlValidation,
+        },
+      };
+    });
+  };
+
   render() {
     let headingText = null;
     if (this.state.isPortrait) {
@@ -61,7 +135,14 @@ class AuthScreen extends Component<Props, State> {
             Switch to Login
           </ButtonWithBackground>
           <View style={styles.inputContainer}>
-            <DefaultInput placeholder="Your e-mail address" style={styles.input} />
+            <DefaultInput
+              placeholder="Your e-mail address"
+              style={styles.input}
+              value={this.state.controls.email.value}
+              isValid={this.state.controls.email.isValid}
+              isTouched={this.state.controls.email.isTouched}
+              onChangeText={val => this.updateInputState('email', val)}
+            />
             <View
               style={
                 this.state.isPortrait
@@ -76,6 +157,10 @@ class AuthScreen extends Component<Props, State> {
                     ? styles.portraitPasswordInput
                     : styles.landscapePasswordInput,
                 ]}
+                value={this.state.controls.password.value}
+                isValid={this.state.controls.password.isValid}
+                isTouched={this.state.controls.password.isTouched}
+                onChangeText={val => this.updateInputState('password', val)}
               />
               <DefaultInput
                 placeholder="Confirm Password"
@@ -85,10 +170,17 @@ class AuthScreen extends Component<Props, State> {
                     ? styles.portraitPasswordInput
                     : styles.landscapePasswordInput,
                 ]}
+                value={this.state.controls.confirmPassword.value}
+                isValid={this.state.controls.confirmPassword.isValid}
+                isTouched={this.state.controls.confirmPassword.isTouched}
+                onChangeText={val => this.updateInputState('confirmPassword', val)}
               />
             </View>
           </View>
-          <ButtonWithBackground onPress={this.loginHandler} color="#29aaf4">
+          <ButtonWithBackground
+            onPress={this.loginHandler}
+            color="#29aaf4"
+            disabled={!this.areAllInputValid()}>
             Submit
           </ButtonWithBackground>
         </View>
