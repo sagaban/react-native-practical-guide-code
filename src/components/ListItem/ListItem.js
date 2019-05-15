@@ -9,12 +9,12 @@ type Props = {
   placeName: string,
   placeImage: Object,
   onItemPress: Function,
-}
+};
 
-const listItem = (props : Props) => (
+const listItem = (props: Props) => (
   <TouchableOpacity onPress={props.onItemPress}>
     <View style={styles.listItem}>
-      <Image resizeMode="contain" source={props.placeImage} style={styles.placeImage}/>
+      <Image resizeMode="contain" source={props.placeImage} style={styles.placeImage} />
       <Text>{props.placeName}</Text>
     </View>
   </TouchableOpacity>
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
     height: 60,
     width: 80,
-  }
-})
+  },
+});
 
 export default listItem;
