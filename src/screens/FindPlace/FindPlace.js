@@ -3,7 +3,7 @@
  * @flow
  */
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
@@ -13,8 +13,11 @@ import type { Places } from '@/types/store';
 type Props = {
   places: Places,
 };
+type State = {
+  placesLoaded: boolean,
+};
 
-class FindPlaceScreen extends Component<Props> {
+class FindPlaceScreen extends Component<Props, State> {
   static options(passProps) {
     return {
       topBar: {
@@ -27,6 +30,10 @@ class FindPlaceScreen extends Component<Props> {
     super(props);
     Navigation.events().bindComponent(this);
   }
+
+  state = {
+    placesLoaded: false,
+  };
 
   navigationButtonPressed({ buttonId }) {
     if (buttonId === 'sideMenuToggle') {
@@ -59,14 +66,45 @@ class FindPlaceScreen extends Component<Props> {
     });
   };
 
+  placesSearchHandler = () => {
+    this.setState({
+      placesLoaded: true,
+    });
+  };
+
   render() {
-    return (
-      <View>
-        <PlaceList places={this.props.places} onItemSelected={this.itemSelectedHandler} />
-      </View>
+    let content = (
+      <TouchableOpacity onPress={this.placesSearchHandler}>
+        <View style={styles.searchButton}>
+          <Text style={styles.searchButtonText}>Find Places</Text>
+        </View>
+      </TouchableOpacity>
     );
+    if (this.state.placesLoaded) {
+      content = <PlaceList places={this.props.places} onItemSelected={this.itemSelectedHandler} />;
+    }
+    return <View style={this.state.placesLoaded ? null : styles.buttonContainer}>{content}</View>;
   }
 }
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  searchButton: {
+    borderColor: 'orange',
+    borderWidth: 3,
+    borderRadius: 50,
+    padding: 20,
+  },
+  searchButtonText: {
+    color: 'orange',
+    fontWeight: 'bold',
+    fontSize: 26,
+  },
+});
 
 const mapStateToProps = state => ({
   places: state.places.places,
