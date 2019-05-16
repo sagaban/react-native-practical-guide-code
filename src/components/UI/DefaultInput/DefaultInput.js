@@ -18,6 +18,7 @@ const defaultInput = (props: Props) => {
 
 defaultInput.defaultProps = {
   isValid: true,
+  isTouched: false,
 };
 
 const styles = StyleSheet.create({

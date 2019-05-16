@@ -3,7 +3,15 @@
  * @flow
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, ImageBackground, Dimensions } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
+  KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { tryAuth } from '@/store/actions';
 
@@ -206,46 +214,48 @@ class AuthScreen extends Component<Props, State> {
     }
     return (
       <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
           {headingText}
           <ButtonWithBackground onPress={this.switchAuthModeHandler} color="#29aaf4">
             Switch to {isAuthModeLogin ? 'Sign Up' : 'Login'}
           </ButtonWithBackground>
-          <View style={styles.inputContainer}>
-            <DefaultInput
-              placeholder="Your e-mail address"
-              style={styles.input}
-              value={this.state.controls.email.value}
-              isValid={this.state.controls.email.isValid}
-              isTouched={this.state.controls.email.isTouched}
-              onChangeText={val => this.updateInputState('email', val)}
-              autoCapitalize="none"
-              autoCorrect={false}
-              keyboardType="email-address"
-            />
-            <View
-              style={
-                this.state.isPortrait
-                  ? styles.portraitPasswordContainer
-                  : styles.landscapePasswordContainer
-              }>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.inputContainer}>
               <DefaultInput
-                placeholder="Password"
-                style={[
-                  styles.input,
-                  this.state.isPortrait || isAuthModeLogin
-                    ? styles.portraitPasswordInput
-                    : styles.landscapePasswordInput,
-                ]}
-                value={this.state.controls.password.value}
-                isValid={this.state.controls.password.isValid}
-                isTouched={this.state.controls.password.isTouched}
-                onChangeText={val => this.updateInputState('password', val)}
-                secureTextEntry
+                placeholder="Your e-mail address"
+                style={styles.input}
+                value={this.state.controls.email.value}
+                isValid={this.state.controls.email.isValid}
+                isTouched={this.state.controls.email.isTouched}
+                onChangeText={val => this.updateInputState('email', val)}
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
               />
-              {confirmPasswordControl}
+              <View
+                style={
+                  this.state.isPortrait
+                    ? styles.portraitPasswordContainer
+                    : styles.landscapePasswordContainer
+                }>
+                <DefaultInput
+                  placeholder="Password"
+                  style={[
+                    styles.input,
+                    this.state.isPortrait || isAuthModeLogin
+                      ? styles.portraitPasswordInput
+                      : styles.landscapePasswordInput,
+                  ]}
+                  value={this.state.controls.password.value}
+                  isValid={this.state.controls.password.isValid}
+                  isTouched={this.state.controls.password.isTouched}
+                  onChangeText={val => this.updateInputState('password', val)}
+                  secureTextEntry
+                />
+                {confirmPasswordControl}
+              </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
           <ButtonWithBackground
             onPress={this.loginHandler}
             color="#29aaf4"
@@ -253,7 +263,7 @@ class AuthScreen extends Component<Props, State> {
             Submit
           </ButtonWithBackground>
           {fillInputButton}
-        </View>
+        </KeyboardAvoidingView>
       </ImageBackground>
     );
   }

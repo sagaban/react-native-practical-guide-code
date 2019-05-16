@@ -9,6 +9,8 @@ import { Navigation } from 'react-native-navigation';
 
 import { addPlace } from '@/store/actions';
 
+import validate from '@/utility/validation';
+
 import PlaceInput from '@/components/PlaceInput/PlaceInput';
 import PickImage from '@/components/PickImage/PickImage';
 import PickLocation from '@/components/PickLocation/PickLocation';
@@ -19,12 +21,22 @@ type Props = {
   onAddPlace: Function,
 };
 type State = {
-  placeName: string,
+  // TODO: define controls type
+  controls: Object,
 };
 
 class SharePlaceScreen extends Component<Props, State> {
   state = {
-    placeName: '',
+    controls: {
+      placeName: {
+        value: '',
+        isTouched: false,
+        isValid: false,
+        validationRules: {
+          notEmpty: true,
+        },
+      },
+    },
   };
 
   static options(passProps) {
@@ -41,7 +53,6 @@ class SharePlaceScreen extends Component<Props, State> {
   }
 
   navigationButtonPressed({ buttonId }) {
-    console.log(`buttonId: ${buttonId}`);
     if (buttonId === 'sideMenuToggle') {
       Navigation.mergeOptions('sideMenu', {
         sideMenu: {
@@ -60,16 +71,24 @@ class SharePlaceScreen extends Component<Props, State> {
     }
   }
 
-  placeNameChangedHandler = (placeName: string) => {
-    this.setState({
-      placeName,
+  updateInputState = (key: string, value: string) => {
+    this.setState((prevState: State) => {
+      return {
+        controls: {
+          ...prevState.controls,
+          [key]: {
+            ...prevState.controls[key],
+            value,
+            isValid: validate(value, prevState.controls[key].validationRules),
+            isTouched: true,
+          },
+        },
+      };
     });
   };
 
   placeAddedHandler = () => {
-    if (this.state.placeName && this.state.placeName.trim() !== '') {
-      this.props.onAddPlace(this.state.placeName);
-    }
+    this.props.onAddPlace(this.state.controls.placeName.value);
   };
 
   render() {
@@ -83,11 +102,15 @@ class SharePlaceScreen extends Component<Props, State> {
           <PickImage />
           <PickLocation />
           <PlaceInput
-            placeName={this.state.placeName}
-            onChangeText={this.placeNameChangedHandler}
+            placeData={this.state.controls.placeName}
+            onChangeText={val => this.updateInputState('placeName', val)}
           />
           <View style={styles.button}>
-            <Button title="Share the place!" onPress={this.placeAddedHandler} />
+            <Button
+              title="Share the place!"
+              onPress={this.placeAddedHandler}
+              disabled={!this.state.controls.placeName.isValid}
+            />
           </View>
         </View>
       </ScrollView>

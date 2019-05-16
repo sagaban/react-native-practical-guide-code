@@ -15,6 +15,9 @@ const validate = (val: any, rules: Object, extraValues: Object): boolean => {
       case 'equalTo':
         isValid = isValid && equalToValidatorValidator(val, extraValues[rules[rule]]);
         break;
+      case 'notEmpty':
+        isValid = isValid && notEmptyValidator(val);
+        break;
       default:
         break;
     }
@@ -33,6 +36,10 @@ const minLengthValidator = (val: string, minLength: number): boolean => {
 
 const equalToValidatorValidator = (val: string, other: string): boolean => {
   return val === other;
+};
+
+const notEmptyValidator = (val: string): boolean => {
+  return val.trim() !== '';
 };
 
 export default validate;
