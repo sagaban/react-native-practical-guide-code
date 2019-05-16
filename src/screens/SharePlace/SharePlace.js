@@ -3,7 +3,7 @@
  * @flow
  */
 import React, { Component } from 'react';
-import { View, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, Button, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
@@ -95,7 +95,7 @@ class SharePlaceScreen extends Component<Props, State> {
     return (
       // <ScrollView contentContainerStyle={styles.container}>
       <ScrollView>
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
           <MainText>
             <HeadingText>Share a place with us</HeadingText>
           </MainText>
@@ -112,7 +112,7 @@ class SharePlaceScreen extends Component<Props, State> {
               disabled={!this.state.controls.placeName.isValid}
             />
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </ScrollView>
     );
   }
