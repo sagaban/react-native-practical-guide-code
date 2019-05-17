@@ -99,6 +99,7 @@ class AuthScreen extends Component<Props, State> {
           },
         },
       });
+      this.loginHandler();
     }
   };
 
@@ -192,7 +193,7 @@ class AuthScreen extends Component<Props, State> {
     }
     const fillInputButton = __DEV__ ? (
       <ButtonWithBackground onPress={this.fillInputs} color="#29aaf4">
-        Fill inputs
+        Fill and login
       </ButtonWithBackground>
     ) : null;
 

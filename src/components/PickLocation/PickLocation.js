@@ -22,6 +22,8 @@ type Props = {} & Object;
 type State = {
   styleURL: any,
   focusedLocation: Object,
+  locationChosen: boolean,
+  zoom: number,
 };
 
 class PickLocation extends Component<Props, State> {
@@ -44,15 +46,14 @@ class PickLocation extends Component<Props, State> {
         latitude: -32.892715,
         longitude: -68.859356,
       },
+      locationChosen: false,
+      zoom: 5,
     };
   }
 
   _mapOptions: ?Object;
+  _map: ?any;
   _styleURLIndex: ?number;
-
-  onMapChange = (index: any, styleURL: any) => {
-    this.setState({ styleURL });
-  };
 
   changeMapStyle = () => {
     if (this._mapOptions) {
@@ -63,19 +64,67 @@ class PickLocation extends Component<Props, State> {
     }
   };
 
+  /*
+{
+  "properties": {
+    "screenPointY": 345.2593994140625,
+    "screenPointX": 553.4874877929688
+  },
+  "geometry": {
+    "coordinates": [
+      -68.7605705782276,
+      -32.70961968208445
+    ],
+    "type": "Point"
+  },
+  "type": "Feature"
+}
+*/
+  pickLocationHandler = (event: any) => {
+    const [longitude, latitude] = event.geometry.coordinates;
+    this.setState(prevState => {
+      return {
+        focusedLocation: {
+          latitude,
+          longitude,
+        },
+        locationChosen: true,
+      };
+    });
+  };
+
+  onRegionDidChange = () => {
+    if (this._map) {
+      this._map.getZoom().then(zoom => {
+        this.setState({ zoom });
+      });
+    }
+  };
+
   render() {
+    let marker = null;
+    const centeredLocation = [
+      this.state.focusedLocation.longitude,
+      this.state.focusedLocation.latitude,
+    ];
+
+    if (this.state.locationChosen) {
+      marker = <MapboxGL.PointAnnotation id="chosenLocationMarker" coordinate={centeredLocation} />;
+    }
     return (
       <View style={styles.container}>
         <MapboxGL.MapView
           showUserLocation
-          centerCoordinate={[
-            this.state.focusedLocation.longitude,
-            this.state.focusedLocation.latitude,
-          ]}
-          zoomLevel={5}
+          centerCoordinate={centeredLocation}
+          zoomLevel={this.state.zoom}
           styleURL={this.state.styleURL}
           style={styles.map}
-        />
+          onPress={this.pickLocationHandler}
+          onRegionDidChange={this.onRegionDidChange}
+          animated
+          ref={c => (this._map = c)}>
+          {marker}
+        </MapboxGL.MapView>
         <View style={styles.button}>
           <Button title="Locate me" onPress={() => alert('Pick location')} />
           <Button title="Change Map Style" onPress={this.changeMapStyle} />
