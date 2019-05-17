@@ -27,7 +27,7 @@ For more informations about your device + operating system dependencies, take a 
 
 To debug the React Native app, install [React Native Debugger](https://github.com/jhen0409/react-native-debugger) and enable *Debug JS Remotely* from the app. Remember to close the browser tab that will be opened.
 
-To debug the Android app itself, just run `react-native log-android` from the terminal.
+To get the native app logs, just run `androidLog` from the terminal.
 
 ## Resources
 

@@ -101,6 +101,21 @@ class PickLocation extends Component<Props, State> {
     }
   };
 
+  getLocationHandler = () => {
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const fakeEvent = {
+          geometry: { coordinates: [pos.coords.longitude, pos.coords.latitude] },
+        };
+        this.pickLocationHandler(fakeEvent);
+      },
+      err => {
+        console.error(err);
+        alert('Error fetching the current position. Please, pick one manually');
+      }
+    );
+  };
+
   render() {
     let marker = null;
     const centeredLocation = [
@@ -126,7 +141,7 @@ class PickLocation extends Component<Props, State> {
           {marker}
         </MapboxGL.MapView>
         <View style={styles.button}>
-          <Button title="Locate me" onPress={() => alert('Pick location')} />
+          <Button title="Locate me" onPress={this.getLocationHandler} />
           <Button title="Change Map Style" onPress={this.changeMapStyle} />
         </View>
       </View>
