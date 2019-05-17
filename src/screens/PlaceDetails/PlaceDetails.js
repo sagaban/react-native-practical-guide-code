@@ -16,6 +16,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import MapboxGL from '@/../node_modules/@mapbox/react-native-mapbox-gl';
 
 import { deletePlace } from '@/store/actions';
 
@@ -38,6 +39,7 @@ class PlaceDetails extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     Dimensions.addEventListener('change', this.updateStyles);
+    Navigation.events().bindComponent(this);
   }
 
   updateStyles = (dims: Object) => {
@@ -45,24 +47,12 @@ class PlaceDetails extends Component<Props, State> {
       isPortrait: dims.window.height > 500,
     });
   };
-  // TODO: move all the `navigationButtonPressed` logic to a mixing
-  // It is repeated in PlaceDetails, SharePlace and FindPlace
-  navigationEventListener: null;
-
-  componentDidMount() {
-    this.navigationEventListener = Navigation.events().bindComponent(this);
-  }
 
   componentWillUnmount() {
-    // Not mandatory
-    if (this.navigationEventListener) {
-      this.navigationEventListener.remove();
-    }
     Dimensions.removeEventListener('change', this.updateStyles);
   }
 
   navigationButtonPressed({ buttonId }) {
-    console.log(`buttonId: ${buttonId}`);
     if (buttonId === 'sideMenuToggle') {
       Navigation.mergeOptions('sideMenu', {
         sideMenu: {
@@ -91,6 +81,10 @@ class PlaceDetails extends Component<Props, State> {
   };
 
   render() {
+    const centeredLocation = [
+      this.props.selectedPlace.location.longitude,
+      this.props.selectedPlace.location.latitude,
+    ];
     return (
       <View
         style={[
@@ -101,6 +95,15 @@ class PlaceDetails extends Component<Props, State> {
           <Image source={this.props.selectedPlace.image} style={styles.placeImage} />
         </View>
         <View style={styles.subContainer}>
+          <MapboxGL.MapView
+            centerCoordinate={centeredLocation}
+            zoomLevel={4}
+            styleURL="mapbox://styles/mapbox/outdoors-v10"
+            style={styles.map}>
+            <MapboxGL.PointAnnotation id="chosenLocationMarker" coordinate={centeredLocation} />
+          </MapboxGL.MapView>
+        </View>
+        <View style={styles.smallSubContainer}>
           <View>
             <Text style={styles.placeName}>{this.props.selectedPlace.value}</Text>
           </View>
@@ -134,7 +137,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   subContainer: {
+    flex: 2,
+    margin: 1,
+  },
+  smallSubContainer: {
     flex: 1,
+    margin: 1,
   },
   placeName: {
     fontWeight: 'bold',
@@ -142,11 +150,18 @@ const styles = StyleSheet.create({
     fontSize: 28,
   },
   placeImage: {
+    flex: 1,
+
     width: '100%',
     height: 200,
   },
   deleteButton: {
     alignItems: 'center',
+  },
+  map: {
+    flex: 1,
+    width: '100%',
+    height: 250,
   },
 });
 

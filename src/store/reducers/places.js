@@ -21,6 +21,7 @@ const reducer = (state: State = initialState, action: Action): State => {
             uri: `https://picsum.photos/id/${Math.floor(Math.random() * 900 + 100)}/300/200`,
           },
           key: `${Math.random()}`, // not ideal, can be repeated
+          location: action.location,
         }),
       };
     case DELETE_PLACE:

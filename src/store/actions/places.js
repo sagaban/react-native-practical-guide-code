@@ -2,14 +2,15 @@
  * @format
  * @flow
  */
-import type { Action } from '@/types/store';
+import type { Action, Location } from '@/types/store';
 
 import { ADD_PLACE, DELETE_PLACE } from '@/store/actions/actionTypes';
 
-export const addPlace = (placeName: string): Action => {
+export const addPlace = (placeName: string, location: Location): Action => {
   return {
     type: ADD_PLACE,
     placeName,
+    location,
   };
 };
 

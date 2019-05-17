@@ -18,7 +18,9 @@ const onSortOptions = (a, b) => {
   return 0;
 };
 
-type Props = {} & Object;
+type Props = {
+  onLocationPick: Function,
+} & Object;
 type State = {
   styleURL: any,
   focusedLocation: Object,
@@ -82,15 +84,17 @@ class PickLocation extends Component<Props, State> {
 */
   pickLocationHandler = (event: any) => {
     const [longitude, latitude] = event.geometry.coordinates;
+    const focusedLocation = {
+      latitude,
+      longitude,
+    };
     this.setState(prevState => {
       return {
-        focusedLocation: {
-          latitude,
-          longitude,
-        },
+        focusedLocation,
         locationChosen: true,
       };
     });
+    this.props.onLocationPick(focusedLocation);
   };
 
   onRegionDidChange = () => {

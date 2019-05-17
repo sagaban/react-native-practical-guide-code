@@ -3,12 +3,18 @@
  * @flow
  */
 
+export type Location = {
+  latitude: number,
+  longitude: number,
+};
+
 export type Item = {
   value: string,
   key: string,
   image: {
     uri: string,
   },
+  location: Location,
 };
 
 export type Places = Array<Item>;

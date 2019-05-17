@@ -36,6 +36,10 @@ class SharePlaceScreen extends Component<Props, State> {
           notEmpty: true,
         },
       },
+      location: {
+        value: null,
+        isValid: false,
+      },
     },
   };
 
@@ -87,20 +91,33 @@ class SharePlaceScreen extends Component<Props, State> {
     });
   };
 
+  locationPickedHandler = location => {
+    this.setState(prevState => {
+      return {
+        controls: {
+          ...prevState.controls,
+          location: {
+            value: location,
+            isValid: true,
+          },
+        },
+      };
+    });
+  };
+
   placeAddedHandler = () => {
-    this.props.onAddPlace(this.state.controls.placeName.value);
+    this.props.onAddPlace(this.state.controls.placeName.value, this.state.controls.location.value);
   };
 
   render() {
     return (
-      // <ScrollView contentContainerStyle={styles.container}>
       <ScrollView>
         <KeyboardAvoidingView style={styles.container} behavior="padding">
           <MainText>
             <HeadingText>Share a place with us</HeadingText>
           </MainText>
           <PickImage />
-          <PickLocation />
+          <PickLocation onLocationPick={this.locationPickedHandler} />
           <PlaceInput
             placeData={this.state.controls.placeName}
             onChangeText={val => this.updateInputState('placeName', val)}
@@ -109,7 +126,9 @@ class SharePlaceScreen extends Component<Props, State> {
             <Button
               title="Share the place!"
               onPress={this.placeAddedHandler}
-              disabled={!this.state.controls.placeName.isValid}
+              disabled={
+                !this.state.controls.placeName.isValid || !this.state.controls.location.isValid
+              }
             />
           </View>
         </KeyboardAvoidingView>
@@ -136,7 +155,7 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onAddPlace: placeName => dispatch(addPlace(placeName)),
+  onAddPlace: (placeName, location) => dispatch(addPlace(placeName, location)),
 });
 
 export default connect(
