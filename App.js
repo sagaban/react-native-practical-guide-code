@@ -16,6 +16,10 @@ import configureStore from '@/store/configureStore';
 
 import type { ComponentType } from 'react';
 
+import MapboxGL from '@/../node_modules/@mapbox/react-native-mapbox-gl';
+import config from './src/utility/config';
+MapboxGL.setAccessToken(config.get('MAPBOX_TOKEN'));
+
 const store = configureStore();
 
 const registerComponent = (
